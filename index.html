@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Black's Woods Case - Series Title Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #0a1e2e 0%, #1a3a4a 50%, #0f2634 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(255, 255, 255, 0.03) 0px,
+                    transparent 1px,
+                    transparent 2px,
+                    rgba(255, 255, 255, 0.03) 3px
+                );
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 20px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid #2a4a5a;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #7fb3d5;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #a0c4d9;
+            font-style: italic;
+            margin-top: 10px;
+        }
+
+        .location {
+            font-size: 0.9rem;
+            color: #608090;
+            margin-top: 5px;
+        }
+
+        .brief-section {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #2a4a5a;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .brief-section h2 {
+            color: #7fb3d5;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #2a4a5a;
+            padding-bottom: 10px;
+        }
+
+        .brief-item {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: rgba(10, 30, 46, 0.6);
+            border-left: 3px solid #4a7a9a;
+        }
+
+        .brief-item strong {
+            color: #9fc9e0;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .titles-grid {
+            display: grid;
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .title-card {
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #2a4a5a;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .title-card:hover {
+            border-color: #7fb3d5;
+            box-shadow: 0 10px 30px rgba(127, 179, 213, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .title-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(127, 179, 213, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .title-card:hover::before {
+            left: 100%;
+        }
+
+        .rank {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 3rem;
+            color: rgba(127, 179, 213, 0.2);
+            font-weight: bold;
+        }
+
+        .title-name {
+            font-size: 1.8rem;
+            color: #7fb3d5;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            position: relative;
+        }
+
+        .title-description {
+            color: #b0c4d0;
+            line-height: 1.6;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        .title-rationale {
+            color: #8a9aa5;
+            font-size: 0.85rem;
+            font-style: italic;
+            padding-top: 15px;
+            border-top: 1px solid #2a4a5a;
+        }
+
+        .tag {
+            display: inline-block;
+            background: rgba(74, 122, 154, 0.3);
+            color: #9fc9e0;
+            padding: 5px 12px;
+            margin: 5px 5px 0 0;
+            font-size: 0.75rem;
+            border: 1px solid #4a7a9a;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .title-name {
+                font-size: 1.4rem;
+            }
+
+            .brief-section {
+                padding: 20px;
+            }
+        }
+
+        .evidence-marker {
+            color: #d97777;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌲 BLACK'S WOODS CASE 🌲</h1>
+            <div class="subtitle">30-Year Cold Case • Missing Teen • Maine Wilderness</div>
+            <div class="location">Allagash Region • 1990s</div>
+        </header>
+
+        <div class="brief-section">
+            <h2>📋 Project Brief</h2>
+            <div class="brief-item">
+                <strong>The Premise:</strong>
+                A 30-year-old cold case involving a missing teenager in the Maine wilderness that is suddenly reignited by a modern-day discovery.
+            </div>
+            <div class="brief-item">
+                <strong>The Protagonist:</strong>
+                A female investigator in her early 30s who is meticulous, observant, and potentially an outsider or a returning "local".
+            </div>
+            <div class="brief-item">
+                <strong>The Setting:</strong>
+                Rural Maine; specifically the Allagash region and "Black's Woods"—a place characterized by dense pines, freezing mist, and long-held secrets.
+            </div>
+            <div class="brief-item">
+                <strong>The Aesthetic:</strong>
+                "Authentic Noir." High-contrast, tactile evidence, analog 1990s artifacts (Polaroids/newsprint), and cold, blue-hour modern cinematography.
+            </div>
+            <div class="brief-item">
+                <strong>The Tone:</strong>
+                Immersive and procedural. It invites the audience to be "armchair detectives" by providing legible, high-detail visual clues.
+            </div>
+        </div>
+
+        <div class="brief-section">
+            <h2>🎬 Top 5 Series Title Recommendations</h2>
+            <div class="titles-grid">
+
+                <div class="title-card">
+                    <div class="rank">1</div>
+                    <div class="title-name">BLACK'S WOODS</div>
+                    <div class="title-description">
+                        Simple, haunting, and evocative. The title anchors the entire series to the mysterious woods themselves—making the location an indelible character. It's memorable, searchable, and sets the noir tone immediately.
+                    </div>
+                    <div class="title-rationale">
+                        <span class="evidence-marker">WHY IT WORKS:</span> Short, punchy, and instantly atmospheric. The possessive "Black's" suggests ownership, history, and secrecy. Perfect for branding across thumbnails and merchandise.
+                    </div>
+                    <div>
+                        <span class="tag">MEMORABLE</span>
+                        <span class="tag">LOCATION-DRIVEN</span>
+                        <span class="tag">NOIR AESTHETIC</span>
+                    </div>
+                </div>
+
+                <div class="title-card">
+                    <div class="rank">2</div>
+                    <div class="title-name">COLD TRAIL: Black's Woods</div>
+                    <div class="title-description">
+                        Emphasizes the cold case element while keeping the iconic location prominent. "Cold Trail" immediately signals the procedural detective work and the frozen Maine setting, while the subtitle grounds it geographically.
+                    </div>
+                    <div class="title-rationale">
+                        <span class="evidence-marker">WHY IT WORKS:</span> Combines genre clarity (cold case) with setting mystery. The colon format allows for potential series expansion (e.g., "Cold Trail: [New Location]").
+                    </div>
+                    <div>
+                        <span class="tag">PROCEDURAL</span>
+                        <span class="tag">EXPANDABLE SERIES</span>
+                        <span class="tag">GENRE-CLEAR</span>
+                    </div>
+                </div>
+
+                <div class="title-card">
+                    <div class="rank">3</div>
+                    <div class="title-name">THE ALLAGASH FILES</div>
+                    <div class="title-description">
+                        Leans into the archival, evidence-based nature of the investigation. "Files" suggests documentation, discovery, and the procedural examination of artifacts—perfect for an "armchair detective" audience that wants to scrutinize clues.
+                    </div>
+                    <div class="title-rationale">
+                        <span class="evidence-marker">WHY IT WORKS:</span> Authentic and documentary-feeling. Appeals to true crime enthusiasts who love deep dives. The Allagash region is real and adds legitimacy.
+                    </div>
+                    <div>
+                        <span class="tag">DOCUMENTARY STYLE</span>
+                        <span class="tag">EVIDENCE-FOCUSED</span>
+                        <span class="tag">TRUE CRIME APPEAL</span>
+                    </div>
+                </div>
+
+                <div class="title-card">
+                    <div class="rank">4</div>
+                    <div class="title-name">VANISHED: Black's Woods 1994</div>
+                    <div class="title-description">
+                        Direct and emotionally charged. "Vanished" immediately conveys the human tragedy of the missing teen, while the year "1994" timestamps the mystery and adds analog-era nostalgia. The subtitle keeps the setting front and center.
+                    </div>
+                    <div class="title-rationale">
+                        <span class="evidence-marker">WHY IT WORKS:</span> Strong emotional hook. The timestamp creates intrigue and period specificity. Great for thumbnails with polaroid/VHS aesthetic overlays.
+                    </div>
+                    <div>
+                        <span class="tag">EMOTIONAL HOOK</span>
+                        <span class="tag">TIME-STAMPED</span>
+                        <span class="tag">90s NOSTALGIA</span>
+                    </div>
+                </div>
+
+                <div class="title-card">
+                    <div class="rank">5</div>
+                    <div class="title-name">CASE FILE: Black's Woods</div>
+                    <div class="title-description">
+                        Professional and procedural. "Case File" signals a serious, investigative approach—ideal for audiences who want to feel like they're reviewing official evidence. The format is clean and allows for episodic structure (e.g., "Case File #1: The Discovery").
+                    </div>
+                    <div class="title-rationale">
+                        <span class="evidence-marker">WHY IT WORKS:</span> Authoritative and modular. Works well for episodic releases and maintains professional tone. Easy to brand with file folder/dossier imagery.
+                    </div>
+                    <div>
+                        <span class="tag">PROFESSIONAL</span>
+                        <span class="tag">EPISODIC FORMAT</span>
+                        <span class="tag">INVESTIGATIVE TONE</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="brief-section" style="text-align: center; padding: 20px;">
+            <p style="color: #7fb3d5; font-size: 0.9rem;">
+                ❄️ <em>The woods remember what the town forgot.</em> ❄️
+            </p>
+        </div>
+    </div>
+</body>
+</html>
